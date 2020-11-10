@@ -39,7 +39,7 @@ function checkLag(){
       	tps = stats[0]
       	if(tps == 0 || tps == undefined){return}
       	tps = parseFloat(tps)
-      	if(tps <= 6){
+      	if(tps <= 6 || tps > 20){
       		if(isLagging == false){
       			msgAll("2b2t-lag", "2B2T has started lagging. TPS: " + tps)
             console.log("2B2T has started lagging. TPS: " + tps)
@@ -63,9 +63,12 @@ function checkLag(){
       			if(tps<=2){
       				totalPoints = totalPoints + (1 / Math.sqrt(tpsAvg/tpsCount))
       			}
+            if(tps > 20 || tps < 0){
+              totalPoints = totalPoints + (1 / Math.sqrt(tpsAvg/tpsCount)) + (15/4)
+            }
       		}
       	}
-      	if(tps > 6){
+      	if(tps > 6 && tps <= 20){
       		if(isLagging == false){return}
             console.log("2B2T has stopped lagging.")
       		if(isLagging == true){
