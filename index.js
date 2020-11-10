@@ -31,13 +31,16 @@ function msgAdmin(msg){
 }
 
 function checkLag(){
-  console.log("Checking TPS.")
 	try{
 	request('https://api.2b2t.dev/status', { json: true }, (err, res, body) => {
 		if(body == undefined){return}
       	stats = body[0]
       	tps = stats[0]
-      	if(tps == 0 || tps == undefined){return}
+      	if(tps == 0 || tps == undefined){
+          console.log("Lolritter offline or API error.")
+          return
+        }
+        console.log("Got TPS: " + tps)
       	tps = parseFloat(tps)
       	if(tps <= 6 || tps > 20){
       		if(isLagging == false){
@@ -64,6 +67,7 @@ function checkLag(){
       				totalPoints = totalPoints + (1 / Math.sqrt(tpsAvg/tpsCount))
       			}
             if(tps > 20 || tps < 0){
+              console.log("Non real TPS! TPS: " + tps)
               totalPoints = totalPoints + (1 / Math.sqrt(tpsAvg/tpsCount)) + (15/4)
             }
       		}
