@@ -67,6 +67,7 @@ function checkLag(){
       	}
       	if(tps > 6){
       		if(isLagging == false){return}
+            console.log("2B2T has stopped lagging.")
       		if(isLagging == true){
       			isLagging = false
       			tpsAvg = tpsAvg/tpsCount
