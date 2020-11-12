@@ -8,6 +8,7 @@ let lagStartTime
 let tpsAvg
 let tpsCount
 let totalPoints
+let tps
 
 
 dbot.on("ready", async () => {
@@ -30,15 +31,23 @@ function msgAdmin(msg){
   } catch(error){console.log(error)}
 }
 
+function readTPS(){
+  try{
+      var path = 'logs/tabTPS.txt';
+      let tps = fs.readFileSync(path, 'utf8');
+      return(tps)
+    } catch(error){console.log(error)}
+}
+
 function checkLag(){
 	try{
 	request('https://api.2b2t.dev/status', { json: true }, (err, res, body) => {
 		if(body == undefined){return}
       	stats = body[0]
       	tps = stats[0]
-      	if(tps == 0 || tps == undefined){
-          console.log("Lolritter offline or API error.")
-          return
+      	if(tps == 0 || tps == undefined || tps == '<'){
+        if(readTPS() == 0 || readTPS == undefined){return}
+        tps = readTPS()
         }
         console.log("Got TPS: " + tps)
       	tps = parseFloat(tps)
@@ -93,7 +102,7 @@ function checkLag(){
       				{ name: 'Average TPS during spike', value: tpsAvg },
      				  { name: 'Lag spike time', value: hours + 'h ' + minutes + 'm ' + seconds + 's.'},
       				{ name: 'Lowest recorded TPS', value: minTps },
-      				{ name: 'Points', value: (totalPoints / 4)},
+      				{ name: 'Estimated points', value: (totalPoints / 4)},
     			  )
     			  msgAll('2b2t-lag', lagEmbed);
       		}
